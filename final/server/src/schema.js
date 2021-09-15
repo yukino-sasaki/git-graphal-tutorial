@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require("apollo-server");
 
 const typeDefs = gql`
   type Query {
@@ -16,6 +16,17 @@ const typeDefs = gql`
     me: User
   }
 
+  """
+  Simple wrapper around our list of launches that contains a cursor to the
+  last item in the list. Pass this cursor to the launches query to fetch results
+  after these.
+  """
+  type LaunchConnection {
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
+  }
+
   type Mutation {
     # if false, signup failed -- check errors
     bookTrips(launchIds: [ID]!): TripUpdateResponse!
@@ -30,17 +41,6 @@ const typeDefs = gql`
     success: Boolean!
     message: String
     launches: [Launch]
-  }
-
-  """
-  Simple wrapper around our list of launches that contains a cursor to the
-  last item in the list. Pass this cursor to the launches query to fetch results
-  after these.
-  """
-  type LaunchConnection {
-    cursor: String!
-    hasMore: Boolean!
-    launches: [Launch]!
   }
 
   type Launch {
